@@ -3,8 +3,16 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image } from 'rea
 
 
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
-import Animated, { add, cond, eq, event, set, Value } from 'react-native-reanimated';
+import Animated, { add, cond, eq, event, set, Value, debug } from 'react-native-reanimated';
 import { wp, hp } from './helper'
+
+
+const assets = [
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1498.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1499.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1500.jpg"
+]
+const snapPoints = assets.map((_, index) => index * -wp(100))
 
 class App extends React.Component {
 
@@ -12,33 +20,37 @@ class App extends React.Component {
     super(props);
 
     this.translateX = new Value(0);
-    const dragX = new Value(0);
+    const x = new Value(0);
     const state = new Value(-1);
-    const dragVX = new Value(0);
+    const translationX = new Value(0);
     const offsetX = new Value(0);
+
 
     this.onGestureEvent = event([
       {
         nativeEvent: {
-          x: dragX,
-          state: state,
+          x,
+          state,
+          translationX,
           // x: offsetX,
         }
       }
     ]);
 
-    const transX = new Value();
     this.translateX = cond(
       eq(state, State.ACTIVE),
       [
         //state active, 
-        set(transX, add(offsetX, dragX)), transX
+        set(translationX, add(translationX, offsetX)), translationX
 
       ],
       [
-        set(offsetX, add(offsetX, transX)),
-      
-        offsetX
+
+
+        set(offsetX, translationX),
+        offsetX,
+
+
       ]
 
     );
@@ -53,16 +65,20 @@ class App extends React.Component {
       <GestureHandlerRootView   >
 
         <PanGestureHandler onGestureEvent={this.onGestureEvent}  >
-          <Animated.View style={{ ...StyleSheet.absoluteFillObject, zIndex: 100, height: hp(100), backgroundColor: "tan" }} >
+          <Animated.View   >
             <Animated.View
               style={{
                 flexDirection: "row",
+                width: wp(100) * assets.length,
                 transform: [{ translateX: this.translateX }]
               }}
             >
-              <Image style={styles.image} source={{ uri: "https://4kwallpapers.com/images/walls/thumbs_3t/5461.jpg" }} />
-              <Image style={styles.image} source={{ uri: "https://4kwallpapers.com/images/walls/thumbs_3t/1498.jpg" }} />
-              <Image style={styles.image} source={{ uri: "https://4kwallpapers.com/images/walls/thumbs_3t/1499.jpg" }} />
+              {
+                assets.map(uri => (
+                  <Image style={styles.image} source={{ uri }} key={uri} />
+
+                ))
+              }
 
             </Animated.View>
           </Animated.View>
