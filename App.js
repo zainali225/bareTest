@@ -3,60 +3,15 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image } from 'rea
 
 
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
-import Animated, { add, cond, eq, event, set, Value, debug } from 'react-native-reanimated';
+import Animated, { add, cond, eq, event, set, Value, debug, Clock } from 'react-native-reanimated';
 import { wp, hp } from './helper'
+import { timing, useClock } from "react-native-redash/lib/module/v1"
+import MySwiper from './MySwiper';
 
 
-const assets = [
-  "https://4kwallpapers.com/images/walls/thumbs_3t/1498.jpg",
-  "https://4kwallpapers.com/images/walls/thumbs_3t/1499.jpg",
-  "https://4kwallpapers.com/images/walls/thumbs_3t/1500.jpg"
-]
-const snapPoints = assets.map((_, index) => index * -wp(100))
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.translateX = new Value(0);
-    const x = new Value(0);
-    const state = new Value(-1);
-    const translationX = new Value(0);
-    const offsetX = new Value(0);
-
-
-    this.onGestureEvent = event([
-      {
-        nativeEvent: {
-          x,
-          state,
-          translationX,
-          // x: offsetX,
-        }
-      }
-    ]);
-
-    this.translateX = cond(
-      eq(state, State.ACTIVE),
-      [
-        //state active, 
-        set(translationX, add(translationX, offsetX)), translationX
-
-      ],
-      [
-
-
-        set(offsetX, translationX),
-        offsetX,
-
-
-      ]
-
-    );
-
-
-  }
 
   render() {
 
@@ -64,25 +19,8 @@ class App extends React.Component {
 
       <GestureHandlerRootView   >
 
-        <PanGestureHandler onGestureEvent={this.onGestureEvent}  >
-          <Animated.View   >
-            <Animated.View
-              style={{
-                flexDirection: "row",
-                width: wp(100) * assets.length,
-                transform: [{ translateX: this.translateX }]
-              }}
-            >
-              {
-                assets.map(uri => (
-                  <Image style={styles.image} source={{ uri }} key={uri} />
+        <MySwiper />
 
-                ))
-              }
-
-            </Animated.View>
-          </Animated.View>
-        </PanGestureHandler>
 
       </GestureHandlerRootView>
     );
