@@ -57,3 +57,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# react-native-reanimated-2.3.0-beta.1.tgz

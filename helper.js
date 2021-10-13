@@ -57,7 +57,7 @@ export function runTiming(clock, value, dest) {
     const config = {
         duration: 1000,
         toValue: dest,
-        easing: EasingNode.linear,
+        easing:EasingNode.circle,
     };
 
     return block([

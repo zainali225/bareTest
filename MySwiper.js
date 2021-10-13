@@ -3,7 +3,7 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image } from 'rea
 
 
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
-import Animated, { add, cond, eq, event, set, Value, debug, Clock, greaterOrEq, lessOrEq, and, or, greaterThan, stopClock } from 'react-native-reanimated';
+import Animated, { add, cond, eq, event, set, Value, debug, Clock, greaterOrEq, lessOrEq, and, or, greaterThan, stopClock, divide, abs } from 'react-native-reanimated';
 import { wp, hp, runSpring, runTiming } from './helper'
 
 
@@ -61,7 +61,10 @@ class MySwiper extends React.Component {
       [
         // stopClock(clock),
         set(offsetX, add(translationX, offsetX)),
-        cond(and(lessOrEq(offsetX, 0), greaterThan(offsetX, MAX)), [], [
+        set(offsetX, abs(divide(offsetX, assets.length))),
+        debug("offset",offsetX),
+        
+        cond(and(lessOrEq(offsetX, 0), greaterThan(offsetX, MAX)), 0, [
           cond(lessOrEq(offsetX, 0), [
             set(offsetX, MAX)
           ], [
@@ -70,7 +73,7 @@ class MySwiper extends React.Component {
 
 
         ]),
-        set(offsetX, runTiming(clock, offsetX, new Value(0))),
+
         offsetX
 
 
