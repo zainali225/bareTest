@@ -4,14 +4,15 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image } from 'rea
 
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
 import Animated, { add, cond, eq, event, set, Value, debug, Clock, greaterOrEq, lessOrEq, and, or, greaterThan, stopClock } from 'react-native-reanimated';
-import { wp, hp, runSpring } from './helper'
-import { timing, useClock } from "react-native-redash/lib/module/v1"
+import { wp, hp, runSpring, runTiming } from './helper'
 
 
 const assets = [
   "https://4kwallpapers.com/images/walls/thumbs_3t/1498.jpg",
   "https://4kwallpapers.com/images/walls/thumbs_3t/1499.jpg",
-  // "https://4kwallpapers.com/images/walls/thumbs_3t/1500.jpg"
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1511.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1501.jpg",
+  "https://4kwallpapers.com/images/walls/thumbs_3t/1506.jpg",
 ]
 const snapPoints = assets.map((_, index) => index * -wp(100))
 const MIN = 0
@@ -35,7 +36,7 @@ class MySwiper extends React.Component {
           x: positionX,
           state,
           translationX,
-          velocityX
+          // velocityX
           // x: offsetX,
         }
       }
@@ -44,12 +45,13 @@ class MySwiper extends React.Component {
     this.translateX = cond(
       eq(state, State.ACTIVE),
       [
-        cond(and(lessOrEq(add(translationX, offsetX), 0), greaterThan(add(translationX, offsetX), MAX)), [
+        // stopClock(clock),
+        set(translationX, add(translationX, offsetX)),
+        cond(and(lessOrEq(translationX, 0), greaterThan(translationX, MAX)), [
 
-          stopClock(clock),
-          set(translationX, add(translationX, offsetX)), translationX,
+          set(translationX, translationX), translationX,
         ], [
-          cond(lessOrEq(add(translationX, offsetX), 0), [
+          cond(lessOrEq(translationX, 0), [
             MAX
           ], [
             0
@@ -57,6 +59,7 @@ class MySwiper extends React.Component {
         ])
       ],
       [
+        // stopClock(clock),
         set(offsetX, add(translationX, offsetX)),
         cond(and(lessOrEq(offsetX, 0), greaterThan(offsetX, MAX)), [], [
           cond(lessOrEq(offsetX, 0), [
@@ -67,8 +70,7 @@ class MySwiper extends React.Component {
 
 
         ]),
-     
-        set(offsetX, runSpring(clock, offsetX, 0, 0)),
+        set(offsetX, runTiming(clock, offsetX, new Value(0))),
         offsetX
 
 
