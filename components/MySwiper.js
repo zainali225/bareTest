@@ -4,7 +4,7 @@ import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image } from 'rea
 
 import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
 import Animated, { add, cond, eq, event, set, Value, debug, Clock, greaterOrEq, lessOrEq, and, or, greaterThan, stopClock, divide, abs } from 'react-native-reanimated';
-import { wp, hp, runSpring, runTsiming } from '../helper'
+import { wp, hp, runSpring, runTiming } from './helper'
 
 
 const assets = [
@@ -28,7 +28,7 @@ class MySwiper extends React.Component {
     const positionX = new Value(0);
     const velocityX = new Value(0)
     const translationX = new Value(0);
-    const clock = new Clock()
+    // const clock = new Clock()
 
     this.onGestureEvent = event([
       {
@@ -36,7 +36,7 @@ class MySwiper extends React.Component {
           x: positionX,
           state,
           translationX,
-          // velocityX
+          velocityX
           // x: offsetX,
         }
       }
@@ -61,9 +61,9 @@ class MySwiper extends React.Component {
       [
         // stopClock(clock),
         set(offsetX, add(translationX, offsetX)),
-        set(offsetX, abs(divide(offsetX, assets.length))),
-        debug("offset",offsetX),
-        
+        // set(offsetX, abs(divide(offsetX, assets.length))),
+        // debug("offset", offsetX),
+
         cond(and(lessOrEq(offsetX, 0), greaterThan(offsetX, MAX)), 0, [
           cond(lessOrEq(offsetX, 0), [
             set(offsetX, MAX)
@@ -73,6 +73,7 @@ class MySwiper extends React.Component {
 
 
         ]),
+ 
 
         offsetX
 
@@ -84,21 +85,6 @@ class MySwiper extends React.Component {
 
   }
 
-  // onGesture = ({ nativeEvent }) => {
-  //   const { x, translationX, state } = nativeEvent;
-  //   if (state === State.ACTIVE) {
-  //     this.translateX.setValue(add(this.offsetX, translationX))
-  //     // console.log(x, "Active", state)
-  //   }
-
-  // }
-  // onEnd = ({ nativeEvent }) => {
-  //   const { x, translationX, state } = nativeEvent;
-
-  //   this.offsetX.setValue(add(translationX, this.offsetX))
-  //   // console.log(add(translationX, this.offsetX).__inputNodes[0]._value, "-----ended", state)
-
-  // }
 
   render() {
 

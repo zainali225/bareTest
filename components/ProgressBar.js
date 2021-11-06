@@ -2,23 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, { EasingNode } from 'react-native-reanimated';
-import { runTiming } from '../helper';
+import { runTiming } from './helper';
 
 const {
     Clock,
     Value,
-    set,
-    cond,
-    startClock,
-    clockRunning,
-    timing,
-    debug,
-    stopClock,
-    block,
     concat,
 } = Animated;
 
- 
+
 export default class ProgressBar extends React.Component {
     static propTypes = {
         progress: PropTypes.number.isRequired,
@@ -34,11 +26,10 @@ export default class ProgressBar extends React.Component {
         width: 100,
         backgroundColor: 'red',
     };
-
-    clock = new Clock();
+ 
     progress = new Value(0);
     animation = new Value(0);
-    transX = runTiming(this.clock, this.progress, this.animation);
+    transX = runTiming(this.progress, this.animation);
 
     componentDidUpdate() {
         const progress = Math.max(Math.min(this.props.progress, 1), 0);
