@@ -1,5 +1,5 @@
 import { Dimensions } from "react-native";
-import { clockRunning, debug, Value, set, startClock, cond, stopClock, spring, Easing, block, timing, EasingNode } from "react-native-reanimated";
+import { clockRunning, debug, Value, set, startClock, cond, stopClock, spring, Easing, block, timing, EasingNode, Clock } from "react-native-reanimated";
 
 
 const HEIGHT = Dimensions.get('window').height
@@ -46,7 +46,7 @@ export function runSpring(clock, value, velocity, dest) {
     ];
 }
 
-export function runTiming(clock, value, dest) {
+export function runTiming(value, dest, duration) {
     const state = {
         finished: new Value(0),
         position: value,
@@ -55,10 +55,11 @@ export function runTiming(clock, value, dest) {
     };
 
     const config = {
-        duration: 1000,
+        duration: duration || 1000,
         toValue: dest,
         easing: EasingNode.linear,
     };
+    const clock = new Clock()
 
     return block([
         cond(clockRunning(clock), 0, [

@@ -1,10 +1,10 @@
 import React, { useState, Component } from 'react';
 import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image, } from 'react-native';
-
+s
 
 import { GestureHandlerRootView, PanGestureHandler, State, } from 'react-native-gesture-handler'
 import Animated, { add, cond, eq, event, set, Value, } from 'react-native-reanimated';
-import { wp, hp } from './helper'
+import { wp, hp } from '../helper'
 
 const circleRadius = 30;
 export default class Circle extends Component {

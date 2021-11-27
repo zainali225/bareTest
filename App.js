@@ -1,51 +1,43 @@
-import React, { useState } from 'react';
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Image, StatusBar } from 'react-native';
+
+import React from 'react';
+import {
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
+import Accordion from './components/Accordion';
+import MyProgress from './components/MyProgress';
+
+import MySwiper from './components/MySwiper'
 
 
-import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler'
-import Animated, { add, cond, eq, event, set, Value, debug, Clock } from 'react-native-reanimated';
-import { wp, hp } from './helper'
-import { timing, useClock } from "react-native-redash/lib/module/v1"
-import MySwiper from './MySwiper'; 
+export default () => {
 
 
-
-class App extends React.Component {
-
-  state = {
-    progress: 0
-  }
-
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({ progress: this.state.progress + 0.1 })
-    }, 1000)
-  }
-
-  render() {
-
-    return (
-
-      <GestureHandlerRootView   >
-        <StatusBar backgroundColor="green" />
-        <MySwiper /> 
-        {/* <ProgressBar progress={this.state.progress} /> */}
-
-      </GestureHandlerRootView>
-    );
-  };
-}
-
-export default App;
+  return (
+    <View style={{ flex: 1, backgroundColor: "#DDD", paddingTop: 50 }} >
+      <StatusBar backgroundColor="green" />
+      <Accordion />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-  image: {
-    width: wp(100), height: hp(90),
-  }
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
 });
+
