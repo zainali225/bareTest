@@ -30,12 +30,17 @@ class Accordion extends React.Component {
             }
         ]);
 
-        this.height = cond(eq(State.END, state), [
-            
-            set(height, runTiming(new Value(0), new Value(100))),
-            height
+        this.height = cond(eq(state, State.END), [
+
+            cond(eq(height, 0),
+                [set(height, runTiming(new Value(0), new Value(100)))],
+                [set(height, runTiming(new Value(100), new Value(0)))]
+            )
+
+
         ], [
-            set(height, runTiming(new Value(100), new Value(0))),
+
+            set(state, State.UNDETERMINED),
             height
             // 0
         ])
@@ -92,6 +97,7 @@ class Accordion extends React.Component {
                 <Text>{this.totalHeight}</Text> */}
 
                 <TapGestureHandler
+                    // onHandlerStateChange={e => console.log(e.nativeEvent.state)}
                     onHandlerStateChange={this.onGestureEvent}
                 >
                     <Animated.View style={{ flexDirection: "row", height: 40, backgroundColor: "cyan", alignItems: "center", justifyContent: "space-between" }} >

@@ -46,7 +46,7 @@ export function runSpring(clock, value, velocity, dest) {
     ];
 }
 
-export function runTiming(value, dest, duration) {
+export function runTiming(value, dest, duration = 1000, clock) {
     const state = {
         finished: new Value(0),
         position: value,
@@ -55,11 +55,11 @@ export function runTiming(value, dest, duration) {
     };
 
     const config = {
-        duration: duration || 1000,
-        toValue: dest,
+        duration: duration,
+        toValue: new Value(0),
         easing: EasingNode.linear,
     };
-    const clock = new Clock()
+    clock = clock || new Clock()
 
     return block([
         cond(clockRunning(clock), 0, [
@@ -74,7 +74,7 @@ export function runTiming(value, dest, duration) {
         // we run the step here that is going to update position
         timing(clock, state, config),
         // if the animation is over we stop the clock
-        cond(state.finished, debug('stop clock', stopClock(clock))),
+        cond(state.finished, stopClock(clock)),
         // we made the block return the updated position
         state.position,
     ]);
